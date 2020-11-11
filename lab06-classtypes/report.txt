@@ -1,0 +1,20 @@
+The item in the box: Basketball
+The item in the box: Volleyball
+
+Let's nest a single box!  A PlainBox in a BoxContainer!
+The original PlainBox holds Basketball and the PlainBox in a BoxContainer (1 level of nesting) holds a Basketball (should both be "Basketball")
+
+Let's try setting the item of the PlainBox in the BoxContainer!
+Calling setItem("Football") on the nested boxes!
+Now the nested box holds a Football (should be "Football")
+
+Let's try to nest our level 1 nested box into a couple of other BoxContainers!
+Pass our box into the constructor of the BoxContainer to nest.
+Let's try to display it's item!  It should still be "Football"
+The PlainBox nested into three BoxContainers has a Football inside (should be "Football")
+Does setItem() still work?  Let's change it to "Tennis Ball"!
+The triple nested box holds a Tennis Ball (should be "Tennis Ball")
+
+Final test!!!  Ten levels of nesting with a MagicBox!  The item should not change when set.
+Initial item is Volleyball
+The box still holds Volleyball (should be "Volleyball") and calling setItem("This shouldn's work!") on the box gives us Volleyball (should still be "Volleyball")

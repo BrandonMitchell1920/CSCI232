@@ -1,0 +1,94 @@
+Testing the RegularPolygon class!!!
+First, create two RegularPolygon instances, a triangle and a square!  
+Warning: you must give a LinkedList<Coord2D> that forms a regular polygon or an error will be thrown!
+
+All right, a square and triangle have been created!
+Let's use the overloaded << operator to take a peek at their coords!
+Note: I overloaded the << operator for the Coord2D class, so << on a RegularPolygon calls << on it's LinkedList member variable.
+
+The square!
+
+1	(0, 0)
+2	(0, 1)
+3	(1, 1)
+4	(1, 0)
+
+The triangle!
+
+1	(2, 1)
+2	(4.5, 5.33013)
+3	(7, 1)
+
+Now that we know their coordinates, lets get some basic info about these two polygons!
+
+The square has ...
+Area:		1
+Perimeter:	4
+Side length:	1
+Radius:		0.707107
+Center:		(0.5, 0.5)
+
+The triangle has ...
+Area:		10.8253
+Perimeter:	15
+Side length:	5
+Radius:		2.88675
+Center:		(4.5, 2.44338)
+
+Let's test the + operator!  The areas of the two polygons will be added together!
+The combined area is 11.8253 (should be 11.8253).
+
+Let's test the add function by adding three points to the Triangle!
+Polygon should resize and change its radius to accommodate the new point farthest away.
+The points being added are ...
+1	(3, 3)
+2	(9, 9)
+3	(0, -2.31e-05)
+
+The triangle is now a hexagon!  Its coords are ...
+
+1	(9, 9)
+2	(1.0718, 9.6188)
+3	(-3.4282, 3.06218)
+4	(-8.02955e-16, -4.11325)
+5	(7.9282, -4.73205)
+6	(12.4282, 1.82457)
+
+Note the coord with the greatest distance from center is now first.  This is because it is used as a reference from which the rest of the polygon is created.  As such, the polygon will shrink or expand depending upon which point is furthest from the center.
+Let's also view some information about the poly!
+
+The hexagon has ...
+Area:		164.301
+Perimeter:	47.7139
+Side length:	7.95232
+Radius:		7.95232
+Center:		(4.5, 2.44338)
+
+Note: if you graph the points and a circle based at its center with its radius, the circle should intersect all points!
+
+Let's now test the remove function and turn this hexagon into a squareagon!
+The points to be removed are ...
+1	(9, 9)
+2	(0, -4.11325)
+3	(-9999, 9999)
+
+Note the second point is actually at -8.02955e-16, but I simply check that the difference between two points is very small to determine equality, so 0 is close enough.
+Also, the third point is not in the hexagon, so it won't be removed.
+Finally, removing points does not change the radius as all points maintain their distance from center; there is nothing to base a change in radius off of.
+
+The hexagon is now a square!  Its coords are ...
+
+1	(1.0718, 9.6188)
+2	(-2.67543, -0.984828)
+3	(7.9282, -4.73205)
+4	(11.6754, 5.87158)
+
+And its other stats are ...
+Area:		126.479
+Perimeter:	44.9851
+Side length:	11.2463
+Radius:		7.95232
+Center:		(4.5, 2.44338)
+
+Note that (9, 9) was first, but it was removed, making (1.0718, 9.6188) the first in the list.  It is still the first after rearranging because the first point in the list is used as a reference to build the rest of the polygon, whether points are being removed or added!
+

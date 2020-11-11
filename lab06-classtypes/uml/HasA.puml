@@ -1,0 +1,94 @@
+/'
+ ' CSCI 232 Data Structures and Algorithms
+ ' 
+ ' UML - BoxContainer with HAS-A relationship 
+ '       using Template of Template to hold generic box
+ '
+ ' Phillip J. Curtiss, Associate Professor
+ ' pcurtiss@mtech.edu, 406-496-4807
+ ' Department of Computer Scinece, Montana Tech
+ '/
+@startuml
+' Turn off the icons that show the access 
+skinparam classAttributeIconSize 0
+
+' Title for the UML Diagram
+note as Title
+class BoxContainer
+Has-A Relationship 
+BoxType<ItemType>
+end note 
+
+/'
+ ' Templated Box Interface
+ '/
+interface BoxInterface<ItemType> <<Interface>> {
+    {abstract} +setItem(anItem: ItemType const): void
+    {abstract} +getItem(): ItemType const
+}
+
+' Course Description
+note as Course 
+CSCI 232 Data Structures
+and Algorithms 
+end note
+
+/'
+ ' Templated Plain Box Class
+ '/
+class PlainBox<ItemType> {
+    -item: ItemType
+
+    +PlainBox()
+    +PlainBox(anItem: ItemType const)
+    +setItem(anItem: ItemType const): void
+    +getItem(): ItemType const
+}
+
+' PlainBox implements the BoxInterface
+BoxInterface <|-- PlainBox
+
+/'
+ ' Templated Magic Box Class
+ '/
+class MagicBox<ItemType> {
+    -firstItemStored: bool 
+
+    +MagicBox()
+    +MagicBox(anItem: ItemType const)
+    +setItem(anItem: ItemType const): void
+}
+
+' MagicBox inherits from PlainBox
+PlainBox <|-- MagicBox
+
+/'
+ ' A Nested Templated BoxContainer Class
+ '/
+class BoxContainer<BoxType<ItemType>> {
+    -box: BoxType<ItemType>
+
+    +BoxContainer()
+    +BoxContainer(aBox: BoxType<ItemType>)
+    +setItem(aBox: BoxType<ItemType> const): void
+    +getItem(): BoxType<ItemType> const
+}
+
+' Describe the Nested Templated Aspect of the 
+' BoxContainer Class - Holding a BoxType<ItemType>
+note top of BoxContainer #LightBlue
+Nested Template Class
+  BoxType - outer template
+  ItemType - inner template
+end note
+
+' BoxContainer implements the BoxInterface
+BoxInterface <|-- BoxContainer
+' BoxContainer can contain a PlainBox
+PlainBox "*" --* "1..* " BoxContainer : contains
+' BoxContainer can contain a MagicBox
+MagicBox "*" --* "0..*     " BoxContainer : contains
+' BoxContainer can contain a BoxContainer
+BoxContainer "*" --* "0..*" BoxContainer : contains
+
+@enduml

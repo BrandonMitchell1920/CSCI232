@@ -1,0 +1,273 @@
+Brandon Mitchell
+
+For the report.txt, I am just going to run this a bunch of times and show the 
+output.  I will show what will cause errors and what it will say to the user
+if they have that issue.  I will also explain a few things.  Since parsing is 
+really the most difficult and important part of this assignment, most of this
+report will be showing the parsing and how it can catch a variety of problems
+
++-----------------------------------------------------------------------------+
+
+Here I test the invalid characters.  Note that capital letters are invalid as 
+that is what the assignment stated to do, but it would be very easy to include
+them.
+
+Please give infix expression: a * 5.5 - 3! * (a--4)
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Invalid character "!" at index 11
+a * 5.5 - 3! * (a--4)
+           ^
+Aborted
+
+Please give infix expression: a - b ^ ((c - D) * e)
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Invalid character "D" at index 14
+a - b ^ ((c - D) * e)
+              ^
+Aborted
+
++-----------------------------------------------------------------------------+
+
+Check the parentheses, pretty simple as we done it before in class.  Note I
+don't print the index of extra open parentheses because I don't currently have
+access to its index and I didn't want to walk back through to figure out which
+one is the problem.
+
+Please give infix expression: (a-b^(9--3)
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Missing one or more close parentheses
+(a-b^(9--3)
+Aborted
+
+Please give infix expression: a - b * (4 ^2)) - a /b
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Close parentheses has no matching open parentheses at index 14
+a - b * (4 ^2)) - a /b
+              ^
+Aborted
+
++-----------------------------------------------------------------------------+
+
+An about three hundred line loop to verify the infix structure and spat out 
+warnings to the user about what is the problem.  Some code is similar and is 
+repeated, but often it is just enought different that putting it in a function
+would be more of a pain.  First I check ops, then variables, numbers, and then
+decimals.  The former three also verify parentheses to some degree.
+
+Please give infix expression: a * * b
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Operator "*" at index 2 has no matching right operand
+a * * b
+  ^
+Aborted
+
+Please give infix expression: a --.5--.2*
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Operator "*" at index 10 has no matching right operand
+a --.5--.2*
+          ^
+Aborted
+
+Please give infix expression: (a - b) * (a - b ^) ^-4.4
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Invalid close parentheses at index 18, make sure no operands are missing
+(a - b) * (a - b ^) ^-4.4
+                  ^
+Aborted
+
+Please give infix expression: -a * 3
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Operator "-" at index 0 has no matching left operand
+-a * 3
+^
+Aborted
+
+Please give infix expression: (*(a-b)*f*f*f)
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Invalid open parentheses at index 0, make sure no operands are missing
+(*(a-b)*f*f*f)
+^
+Aborted
+
+Please give infix expression: 5.5 - a * aa - 5.5
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Invalid operand (variable) at 10, only single char [a - z] variables are supported
+5.5 - a * aa - 5.5
+          ^
+Aborted
+
+Please give infix expression: ((((a - b) -b ) -f6))
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Invalid operand (variable) at 17, make sure no operators are missing
+((((a - b) -b ) -f6))
+                 ^
+Aborted
+
+Please give infix expression: (a-b)a*3
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Invalid close parentheses at 4, make sure no operators are missing
+(a-b)a*3
+    ^
+Aborted
+
+Please give infix expression: 5.5 - 5.5 - (-4 * -8.9.2) ^ 1
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Invalid variable (decimal literal) at index 18, remove extra decimal point(s)
+5.5 - 5.5 - (-4 * -8.9.2) ^ 1
+                  ^
+Aborted
+
+Please give infix expression: a + 5  5 - 2
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Invalid operand (numeral literal) at 7, make sure no operators are missing
+a + 5  5 - 2
+       ^
+Aborted
+
+Please give infix expression: 5(-4*-4)
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Invalid open parentheses at 1, make sure no operators are missing
+5(-4*-4)
+ ^
+Aborted
+
+Please give infix expression: (9--9)5 ^2
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Invalid close parentheses at 5, make sure no operators are missing
+(9--9)5 ^2
+     ^
+Aborted
+
+Please give infix expression: 3.4 --4.2 +  . 8
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Stray decimal point at index 13, remove unnecessary demicals
+3.4 --4.2 +  . 8
+             ^
+Aborted
+
++-----------------------------------------------------------------------------+
+
+I also have a check comparing the number of operators to operands.  Since all 
+operators are sandwiched in two operands, the number of operators should be one
+less than the operands.  This was mainly added as I changed some error checking
+code above so one error would be prefered over the other, but it meant this 
+error could get through.
+
+Please give infix expression: ()-a * 4
+terminate called after throwing an instance of 'PrecondViolatedExcep'
+  what():  Precondition Violated Exception:
+Invalid number of operators compared to operands, "2" compared to "2",
+should be one less operators compared to operands, make sure all operators are balanced
+()-a * 4
+Aborted
+
++-----------------------------------------------------------------------------+
+
+Finally, let's show it working on all manner of input.  Note that negative 
+numbers are allowed, but the negative will have to be a part of the number and 
+right at the front, or it will error.  I will start with some simple examples
+that can easily be verfied as correct by the user and then I will do some more
+complicated ones.  It wouldn't be too difficult to add support for unary 
+operators on variables since it would be similar to negative numbers.  Also,
+variables of two or more characters woundn't be too difficult to implement as
+well.
+
+Note that the postfix equivalnts have 0 added to the front of decimals and have
+spaces between them.  This just makes it easier to parse once again for 
+evaluation and makes it look nicer.
+
+Please give infix expression: a * b - c
+Infix: a * b - c
+Postfix: a b * c -
+Please provide values for all variables included in the above expression.
+a: 3
+b: 4
+c: 2
+Result: 10
+
+Please give infix expression: a - -.5 * (3 + b)
+Infix: a - -.5 * (3 + b)
+Postfix: a -0.5 3 b + * -
+Please provide values for all variables included in the above expression.
+a: 4
+b: 7
+Result: 9
+
+Please give infix expression: a^(2*-2)     -3
+Infix: a^(2*-2)     -3
+Postfix: a 2 -2 * ^ 3 -
+Please provide values for all variables included in the above expression.
+a: 2
+Result: -2.9375
+
+Please give infix expression: ((b))-((-5))
+Infix: ((b))-((-5))
+Postfix: b -5 -
+Please provide values for all variables included in the above expression.
+b: -10
+Result: -5
+
+Please give infix expression: ( a - b ) * (-.3 *-10 )^ (-2*-1)
+Infix: ( a - b ) * (-.3 *-10 )^ (-2*-1)
+Postfix: a b - -0.3 -10 * -2 -1 * ^ *
+Please provide values for all variables included in the above expression.
+a: 6
+b: 3
+Result: 27
+
+Please give infix expression: (4) ^ -4 * .125 - (3 - b + b - b + b)
+Infix: (4) ^ -4 * .125 - (3 - b + b - b + b)
+Postfix: 4 -4 ^ 0.125 * 3 b - b + b - b + -
+Please provide values for all variables included in the above expression.
+b: 3
+Result: -2.99951
+
+Please give infix expression: a * a     *       (a ^       ((a))) -     -.9
+Infix: a * a     *       (a ^       ((a))) -     -.9
+Postfix: a a * a a ^ * -0.9 -
+Please provide values for all variables included in the above expression.
+a: 3
+Result: 243.9
+
+Please give infix expression: 4-4*(3.2+-.2)*(1 --1)
+Infix: 4-4*(3.2+-.2)*(1 --1)
+Postfix: 4 4 3.2 -0.2 + * 1 -1 - * -
+Result: -20
+
+Please give infix expression: -1 ^ -2 ^ -3 ^ -4
+Infix: -1 ^ -2 ^ -3 ^ -4
+Postfix: -1 -2 ^ -3 ^ -4 ^
+Result: 1
+
++-----------------------------------------------------------------------------+
+
+I also check for a few runtime errors that could occur from certain inputs, 
+like division by zero.
+
+Please give infix expression: 234 - 4 * 2 / a
+Infix: 234 - 4 * 2 / a
+Postfix: 234 4 2 * a / -
+Please provide values for all variables included in the above expression.
+a: 0
+terminate called after throwing an instance of 'std::logic_error'
+  what():
+Attempted to divide by zero
+234 4 2 * a / -
+Aborted
