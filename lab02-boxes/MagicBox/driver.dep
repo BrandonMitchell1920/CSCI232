@@ -1,0 +1,2 @@
+driver.o: driver.cpp MagicBox.h PlainBox.h BoxInterface.h PlainBox.cpp \
+ MagicBox.cpp

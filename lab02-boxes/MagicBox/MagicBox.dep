@@ -1,0 +1,2 @@
+MagicBox.o: MagicBox.cpp MagicBox.h PlainBox.h BoxInterface.h \
+ PlainBox.cpp MagicBox.cpp

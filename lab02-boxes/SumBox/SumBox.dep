@@ -1,0 +1,2 @@
+SumBox.o: SumBox.cpp SumBox.h ToyBox.h PlainBox.h BoxInterface.h \
+ PlainBox.cpp ToyBox.cpp

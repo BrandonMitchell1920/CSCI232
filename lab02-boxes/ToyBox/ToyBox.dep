@@ -1,0 +1,2 @@
+ToyBox.o: ToyBox.cpp ToyBox.h PlainBox.h BoxInterface.h PlainBox.cpp \
+ ToyBox.cpp
